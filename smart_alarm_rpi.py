@@ -1,11 +1,13 @@
 import time
 import datetime as dt
 from datetime import datetime
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, jsonify
 
 import serial
 import RPi.GPIO as GPIO
 import time
+
+import requests, json
 
 import threading
 
@@ -19,8 +21,10 @@ class Alarm:
     def __init__(self):
         self.al_state = True
         self.alarm_set = False
+        self.alarm_time = None
     
     def alarm_on(self, alarm_time):
+        self.alarm_time = alarm_time
         self.al_state = True
         self.alarm_set = True
         while(self.al_state):
@@ -82,6 +86,17 @@ def stop_alarm():
     
     return "OK"
 
+@app.route('/get_status', methods = ['GET', 'POST'])
+def get_status():
+    if request.method=="POST":
+        if alarm.alarm_set:
+            alarm_time_hour = alarm.alarm_time.hour
+            alarm_time_min = alarm.alarm_time.minute
+            status_text = "Alarm Set at "+str(alarm_time_hour)+":"+\
+                            str(alarm_time_min)+" Eastern Standard Time"
+            return jsonify({'alarm_status':status_text})
+        else:
+            return jsonify({'alarm_status':"No Alarm Set"})
 
 
 if __name__=="__main__":

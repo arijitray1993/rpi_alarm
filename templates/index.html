@@ -11,7 +11,9 @@
 </head>
 
 <body>
-
+        <p>
+                <div id="alarm_status"></div>
+        </p>
 <form>
     <select id="hour" name="hour">
         <option value="1">1</option>
@@ -26,6 +28,18 @@
         <option value="10">10</option>
         <option value="11">11</option>
         <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
     </select>
     
     <select id="minute" name="minute">
@@ -97,6 +111,9 @@
 
 </body>
 <script>
+
+get_status();
+
 async function send(){
     var hour = document.getElementById("hour").value;
     var minute = document.getElementById("minute").value;
@@ -106,12 +123,20 @@ async function send(){
     formvars.append("minute", minute);
     
     let r = await fetch('/set_alarm', {method: "POST", body: formvars}); 
-    let resp = await r.json();
+    get_status();
 }
 
 async function stop(){
     let r = await fetch('/stop_alarm', {method: "POST"});
+    get_status();
 }
+
+async function get_status(){
+    let r = await fetch('/get_status', {method: "POST"});
+    let resp = await r.json();
+    document.getElementById("alarm_status").innerHTML=resp['alarm_status'];
+}
+
 
 
 </script>
