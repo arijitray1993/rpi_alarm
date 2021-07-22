@@ -34,5 +34,5 @@ Code for making a wifi-controlled alarm clock using Raspberry Pi.
 
 The alarm control server should now be running on the localhost:5000 of the RaspberryPi. 
 
-From any computer or mobile device connected to your WiFi or LAN, open `raspberrypi.local:5000`. You should be able to set and delete alarms. 
+From any computer or mobile device connected to your WiFi or LAN, open raspberrypi.local:5000. You should be able to set and delete alarms. 
 
