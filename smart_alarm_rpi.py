@@ -89,14 +89,17 @@ def stop_alarm():
 @app.route('/get_status', methods = ['GET', 'POST'])
 def get_status():
     if request.method=="POST":
+        now_time = datetime.now()
         if alarm.alarm_set:
-            alarm_time_hour = alarm.alarm_time.hour
-            alarm_time_min = alarm.alarm_time.minute
-            status_text = "Alarm Set at "+str(alarm_time_hour)+":"+\
-                            str(alarm_time_min)+" Eastern Standard Time"
+            #alarm_time_hour = alarm.alarm_time.hour
+            #alarm_time_min = alarm.alarm_time.minute
+            status_text = "<p> Current time: "+str(now_time)+" EST </p>"
+            status_text += "<p> Alarm Set at "+str(alarm.alarm_time)+" EST </p>"
             return jsonify({'alarm_status':status_text})
         else:
-            return jsonify({'alarm_status':"No Alarm Set"})
+            status_text = "<p>Current time: "+str(now_time)+" EST </p>"
+            status_text+= "<p>No Alarm Set </p>"
+            return jsonify({'alarm_status':status_text})
 
 
 if __name__=="__main__":
